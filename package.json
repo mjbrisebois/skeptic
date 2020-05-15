@@ -1,0 +1,26 @@
+{
+  "name": "@whi/skeptic",
+  "version": "0.1.0",
+  "description": "A quality control validation library built on top of @whi/serious-error-types",
+  "main": "src/index.js",
+  "files": [
+    "README.md"
+  ],
+  "dependencies": {
+    "@whi/serious-error-types": "^0.1.2",
+    "@whi/stdlog": "^0.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matthew Brisebois",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mjbrisebois/skeptic"
+  }
+}
