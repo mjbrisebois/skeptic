@@ -7,7 +7,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@whi/serious-error-types": "^0.1.2",
+    "@whi/serious-error-types": "^0.1.4",
     "@whi/stdlog": "^0.3.0"
   },
   "devDependencies": {
