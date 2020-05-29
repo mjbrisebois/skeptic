@@ -15,16 +15,58 @@ class Reason extends Error {
 }
 
 function type_filter( expected_type, value ) {
+    let return_value			= value;
+
+    switch ( typeof value ) {
+    case "object":
+	if ( value === null )
+	    break;
+	if ( Object.getPrototypeOf( value ).constructor.name.toLowerCase() === expected_type )
+	    value			= value.valueOf();
+	break;
+    }
+
     switch ( expected_type ) {
     case "number":
 	if ( typeof value === "string" )
-	    value			= parseInt( value );
+	    return_value		= value = parseInt( value );
 	if ( isNaN( value ) )
 	    throw new Reason( "NaN" );
 	break;
     case "object":
 	if ( value === null )
-	    throw new Reason( "null" );
+	    throw new Reason( "null is not considered to be an 'object'" );
+	break;
+    case "boolean":
+	if ( typeof value === "string" ) {
+	    if ( value.toLowerCase() === "true" )
+		return_value		= value = true;
+	    else if ( value.toLowerCase() === "false" )
+		return_value		= value = false;
+	}
+
+	if ( typeof value !== "boolean" )
+	    throw new Reason( typeof value );
+	break;
+    case "null":
+	if ( typeof value === "string" ) {
+	    if ( value.toLowerCase() === "null" )
+		return_value		= value = null;
+	}
+	if ( value !== null )
+	    throw new Reason( typeof value );
+	break;
+    case "undefined":
+	if ( typeof value === "string" ) {
+	    if ( value.toLowerCase() === "undefined" )
+		return_value		= value = undefined;
+	}
+	if ( value !== undefined )
+	    throw new Reason( typeof value );
+	break;
+    case "array":
+	if ( ! Array.isArray( return_value ) )
+	     throw new Reason( `not array` );
 	break;
     default:
 	if ( typeof value !== expected_type )
@@ -32,7 +74,7 @@ function type_filter( expected_type, value ) {
 	break;
     }
 
-    return value;
+    return return_value;
 }
 
 function any_type_filter ( valid_types, value ) {
@@ -55,6 +97,24 @@ function any_type_filter ( valid_types, value ) {
 }
 
 function type_check_strict( expected_type, value ) {
+    switch ( typeof value ) {
+    case "object":
+	if ( value === null )
+	    break;
+	if ( Object.getPrototypeOf( value ).constructor.name.toLowerCase() === expected_type )
+	    return null;
+	break;
+    }
+
+    if ( expected_type === "null" && value === null )
+	return null;
+
+    if ( expected_type === "undefined" && value === undefined )
+	return null;
+
+    if ( expected_type === "array" && Array.isArray( value ) )
+	return null;
+
     if ( typeof value !== expected_type )
 	return typeof value;
 
@@ -65,7 +125,7 @@ function type_check_strict( expected_type, value ) {
 	break;
     case "object":
 	if ( value === null )
-	    return "null";
+	    return "null is not considered to be an 'object'";
 	break;
     }
 
@@ -230,4 +290,6 @@ module.exports				= {
     HttpIO,
     FunctionIO,
     DatabaseIO,
+    type_check_strict,
+    type_filter,
 };
