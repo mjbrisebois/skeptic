@@ -1,6 +1,6 @@
 {
   "name": "@whi/skeptic",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A quality control validation library built on top of @whi/serious-error-types",
   "main": "src/index.js",
   "files": [
