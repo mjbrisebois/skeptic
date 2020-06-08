@@ -4,9 +4,9 @@
 A quality control validation library built on top of `@whi/serious-error-types`.  It enables
 developers to clearly state input/output assumptions in their code.
 
-![](https://img.shields.io/github/issues-raw/mjbrisebois/skeptic?style=flat-square)
-![](https://img.shields.io/github/issues-closed-raw/mjbrisebois/skeptic?style=flat-square)
-![](https://img.shields.io/github/issues-pr-raw/mjbrisebois/skeptic?style=flat-square)
+[![](https://img.shields.io/github/issues-raw/mjbrisebois/skeptic?style=flat-square)](https://github.com/mjbrisebois/skeptic/issues)
+[![](https://img.shields.io/github/issues-closed-raw/mjbrisebois/skeptic?style=flat-square)](https://github.com/mjbrisebois/skeptic/issues?q=is%3Aissue+is%3Aclosed)
+[![](https://img.shields.io/github/issues-pr-raw/mjbrisebois/skeptic?style=flat-square)](https://github.com/mjbrisebois/skeptic/pulls)
 
 ## Overview
 These validation methods cover more complex scenarios and throw specific error types where `assert`

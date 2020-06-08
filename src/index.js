@@ -77,7 +77,7 @@ function type_filter( expected_type, value ) {
     return return_value;
 }
 
-function any_type_filter ( valid_types, value ) {
+function multi_type_filter ( valid_types, value ) {
     let passed				= false;
     let reasons				= [];
     for ( let type of valid_types ) {
@@ -132,7 +132,7 @@ function type_check_strict( expected_type, value ) {
     return null;
 }
 
-function any_type_check ( valid_types, value ) {
+function multi_type_check ( valid_types, value ) {
     let passed				= false;
     let reasons				= [];
     for ( let type of valid_types ) {
@@ -167,6 +167,27 @@ const HttpIO				= {
 	};
     },
 
+    filterBody ( rules ) {
+	const context			= "HTTP Request";
+	return ( body ) => {
+	    if ( body === undefined )
+		throw new MissingInputError( context, "body data");
+
+	    const reason		= type_check_strict( "object", body );
+	    if ( reason !== null )
+		throw new InvalidInputError( context, "body data", reason, "object (!null)" );
+
+	    log.debug("Found filter rules for: %s", Object.keys( rules ).join(", ") );
+	    log.silly("Body has values for  : %s", Object.keys( body ).join(", ") );
+	    const filtered		= {};
+	    for ( let [k,filter] of Object.entries(rules) ) {
+		filtered[k]		= filter( `Body data '${k}'`, body[k] );;
+	    }
+
+	    return filtered;
+	};
+    },
+
     requiredType ( expected_types, label ) {
 	expected_types			= expected_types.split("|");
 	return ( context, value ) => {
@@ -174,7 +195,7 @@ const HttpIO				= {
 		throw new MissingInputError( context, label );
 
 	    log.silly("Filtering types (%s) for value type %s", expected_types.join(", "), typeof value );
-	    const filtered		= any_type_filter( expected_types, value );
+	    const filtered		= multi_type_filter( expected_types, value );
 
 	    log.silly("Filtered result for (%s): %s", label, filtered );
 	    if ( Array.isArray( filtered ) )
@@ -191,7 +212,7 @@ const HttpIO				= {
 		return;
 
 	    log.silly("Filtering types (%s) for value type %s", expected_types.join(", "), typeof value );
-	    const filtered		= any_type_filter( expected_types, value );
+	    const filtered		= multi_type_filter( expected_types, value );
 
 	    log.silly("Filtered result for (%s): %s", label, filtered );
 	    if ( Array.isArray( filtered ) )
@@ -217,7 +238,7 @@ const FunctionIO			= {
 	    if ( value === undefined )
 		throw new MissingArgumentError( position, label );
 
-	    const reasons		= any_type_check( expected_types, value );
+	    const reasons		= multi_type_check( expected_types, value );
 	    if ( reasons !== null )
 		throw new InvalidArgumentError( position, label, reasons.join(" and "), expected_types.join(" or ") );
 	};
@@ -229,7 +250,7 @@ const FunctionIO			= {
 	    if ( value === undefined )
 		return;
 
-	    const reasons		= any_type_check( expected_types, value );
+	    const reasons		= multi_type_check( expected_types, value );
 	    if ( reasons !== null )
 		throw new InvalidArgumentError( position, label, reasons.join(" and "), expected_types.join(" or ") );
 	};
