@@ -10,7 +10,7 @@
     "dist/skeptic.bundled.js"
   ],
   "dependencies": {
-    "@whi/serious-error-types": "^0.1.9"
+    "@whi/serious-error-types": "^0.1.10"
   },
   "devDependencies": {
     "@whi/stdlog": "^0.3.0",

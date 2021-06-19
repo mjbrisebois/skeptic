@@ -5,15 +5,23 @@
 	<script type="text/javascript" src="../dist/skeptic.bundled.js"></script>
 
 	<script type="text/javascript">
+	  const { SeriousErrors,
+		  FunctionIO,
+		  logging } = Skeptic;
+
+	  logging();
+
 	  function test () {
 	      FunctionIO.validateArguments(arguments, [
 		  FunctionIO.requiredArgumentType("number|string", "First"),
 	      ]);
 	  };
+
 	  try {
 	      test();
 	  } catch (err) {
-	      console.log("Basic test", err instanceof SeriousErrors.MissingArgumentError);
+	      console.error( err );
+	      console.log("Basic test: true ===", err instanceof SeriousErrors.MissingArgumentError);
 	  }
 	</script>
     </body>

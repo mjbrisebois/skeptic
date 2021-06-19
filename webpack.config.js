@@ -6,13 +6,12 @@ module.exports = {
     target: 'web',
     mode: 'production', // production | development
     entry: [ './src/index.js' ],
-    resolve: {
-	mainFields: ['main', 'module'],
-    },
     output: {
 	filename: 'skeptic.bundled.js',
+	globalObject: 'this',
 	library: {
-	    "type": "window",
+	    "name": "Skeptic",
+	    "type": "umd",
 	},
     },
     stats: {

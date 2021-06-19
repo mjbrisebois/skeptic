@@ -8,6 +8,9 @@ const expect				= require('chai').expect;
 const { SeriousErrors,
 	FunctionIO,
 	logging }			= require('../../src/index.js');
+// const { SeriousErrors,
+// 	FunctionIO,
+// 	logging }			= require('../../dist/skeptic.bundled.js');
 
 if ( process.env.LOG_LEVEL )
     logging();
