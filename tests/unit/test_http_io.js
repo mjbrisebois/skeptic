@@ -6,7 +6,11 @@ const log				= require('@whi/stdlog')(path.basename( __filename ), {
 const expect				= require('chai').expect;
 
 const { SeriousErrors,
-	HttpIO }			= require('../../src/index.js');
+	HttpIO,
+	logging }			= require('../../src/index.js');
+
+if ( process.env.LOG_LEVEL )
+    logging();
 
 function query_tests () {
     it("should filter query parameters", async () => {

@@ -6,7 +6,11 @@ const log				= require('@whi/stdlog')(path.basename( __filename ), {
 const expect				= require('chai').expect;
 
 const { SeriousErrors,
-	DatabaseIO }			= require('../../src/index.js');
+	DatabaseIO,
+	logging }			= require('../../src/index.js');
+
+if ( process.env.LOG_LEVEL )
+    logging();
 
 const query_fails			= function () {
     const p				= Promise.reject( new Error("Query failed...") );

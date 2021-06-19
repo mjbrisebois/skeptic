@@ -7,7 +7,12 @@ const expect				= require('chai').expect;
 
 const { SeriousErrors,
 	type_check_strict,
-	type_filter }			= require('../../src/index.js');
+	type_filter,
+	logging }			= require('../../src/index.js');
+
+if ( process.env.LOG_LEVEL )
+    logging();
+
 const tc				= type_check_strict;
 const tf				= type_filter;
 

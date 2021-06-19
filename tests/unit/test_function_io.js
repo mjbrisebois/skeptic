@@ -6,7 +6,11 @@ const log				= require('@whi/stdlog')(path.basename( __filename ), {
 const expect				= require('chai').expect;
 
 const { SeriousErrors,
-	FunctionIO }			= require('../../src/index.js');
+	FunctionIO,
+	logging }			= require('../../src/index.js');
+
+if ( process.env.LOG_LEVEL )
+    logging();
 
 function io_tests () {
     it("should not detect multiple types allowed", async () => {

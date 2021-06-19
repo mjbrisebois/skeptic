@@ -1,0 +1,20 @@
+<html>
+    <head>
+    </head>
+    <body>
+	<script type="text/javascript" src="../dist/skeptic.bundled.js"></script>
+
+	<script type="text/javascript">
+	  function test () {
+	      FunctionIO.validateArguments(arguments, [
+		  FunctionIO.requiredArgumentType("number|string", "First"),
+	      ]);
+	  };
+	  try {
+	      test();
+	  } catch (err) {
+	      console.log("Basic test", err instanceof SeriousErrors.MissingArgumentError);
+	  }
+	</script>
+    </body>
+</html>

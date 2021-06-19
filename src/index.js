@@ -1,7 +1,3 @@
-const path				= require('path');
-const log				= require('@whi/stdlog')(path.basename( __filename ), {
-    level: (!__dirname.includes("/node_modules/") && process.env.LOG_LEVEL ) || 'fatal',
-});
 
 const serious_errors			= require('@whi/serious-error-types');
 const { MissingInputError,
@@ -10,6 +6,14 @@ const { MissingInputError,
 	InvalidArgumentError,
 	DatabaseQueryError,
 	ItemNotFoundError }		= serious_errors;
+
+let debug				= false;
+
+function log ( msg, ...args ) {
+    let datetime			= (new Date()).toISOString();
+    console.log(`${datetime} [ src/index. ]  INFO: ${msg}`, ...args );
+}
+
 
 class Reason extends Error {
 }
@@ -156,8 +160,8 @@ const HttpIO				= {
 	    if ( reason !== null )
 		throw new InvalidInputError( context, "query parameters", reason, "object (!null)" );
 
-	    log.debug("Found filter rules for: %s", Object.keys( rules ).join(", ") );
-	    log.silly("Query has values for  : %s", Object.keys( query ).join(", ") );
+	    debug && log("Found filter rules for: %s", Object.keys( rules ).join(", ") );
+	    debug && log("Query has values for  : %s", Object.keys( query ).join(", ") );
 	    const filtered		= {};
 	    for ( let [k,filter] of Object.entries(rules) ) {
 		filtered[k]		= filter( `Query parameter '${k}'`, query[k] );;
@@ -177,8 +181,8 @@ const HttpIO				= {
 	    if ( reason !== null )
 		throw new InvalidInputError( context, "body data", reason, "object (!null)" );
 
-	    log.debug("Found filter rules for: %s", Object.keys( rules ).join(", ") );
-	    log.silly("Body has values for  : %s", Object.keys( body ).join(", ") );
+	    debug && log("Found filter rules for: %s", Object.keys( rules ).join(", ") );
+	    debug && log("Body has values for  : %s", Object.keys( body ).join(", ") );
 	    const filtered		= {};
 	    for ( let [k,filter] of Object.entries(rules) ) {
 		filtered[k]		= filter( `Body data '${k}'`, body[k] );;
@@ -194,10 +198,10 @@ const HttpIO				= {
 	    if ( value === undefined )
 		throw new MissingInputError( context, label );
 
-	    log.silly("Filtering types (%s) for value type %s", expected_types.join(", "), typeof value );
+	    debug && log("Filtering types (%s) for value type %s", expected_types.join(", "), typeof value );
 	    const filtered		= multi_type_filter( expected_types, value );
 
-	    log.silly("Filtered result for (%s): %s", label, filtered );
+	    debug && log("Filtered result for (%s): %s", label, filtered );
 	    if ( Array.isArray( filtered ) )
 		throw new InvalidInputError( context, label, filtered.join(" and "), expected_types.join(" or ") );
 
@@ -211,10 +215,10 @@ const HttpIO				= {
 	    if ( value === undefined )
 		return;
 
-	    log.silly("Filtering types (%s) for value type %s", expected_types.join(", "), typeof value );
+	    debug && log("Filtering types (%s) for value type %s", expected_types.join(", "), typeof value );
 	    const filtered		= multi_type_filter( expected_types, value );
 
-	    log.silly("Filtered result for (%s): %s", label, filtered );
+	    debug && log("Filtered result for (%s): %s", label, filtered );
 	    if ( Array.isArray( filtered ) )
 		throw new InvalidInputError( context, label, filtered.join(" and "), expected_types.join(" or ") );
 
@@ -313,4 +317,7 @@ module.exports				= {
     DatabaseIO,
     type_check_strict,
     type_filter,
+    logging () {
+	debug				= true;
+    },
 };

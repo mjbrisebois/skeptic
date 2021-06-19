@@ -3,18 +3,24 @@
   "version": "0.1.3",
   "description": "A quality control validation library built on top of @whi/serious-error-types",
   "main": "src/index.js",
+  "browser": "dist/skeptic.bundled.js",
   "files": [
-    "README.md"
+    "README.md",
+    "src/index.js",
+    "dist/skeptic.bundled.js"
   ],
   "dependencies": {
-    "@whi/serious-error-types": "^0.1.4",
-    "@whi/stdlog": "^0.3.0"
+    "@whi/serious-error-types": "^0.1.9"
   },
   "devDependencies": {
+    "@whi/stdlog": "^0.3.0",
     "chai": "^4.2.0",
-    "mocha": "^7.1.2"
+    "mocha": "^7.1.2",
+    "webpack": "^5.39.1",
+    "webpack-cli": "^4.7.2"
   },
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Matthew Brisebois",
